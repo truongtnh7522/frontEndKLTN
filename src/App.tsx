@@ -12,6 +12,7 @@ import Logo2 from "../src/assets/Logo2.png";
 import Logo from "../src/assets/LogoSN.png";
 import { useSelector } from "react-redux";
 import { RootState } from "../src/redux/store";
+import VerifyCode from "./pages/VerifyCode/VerifyCode";
 // import { Toaster } from "react-hot-toast";
 // import { successToast } from "./utils/getToast";
 function App() {
@@ -56,8 +57,9 @@ function App() {
                 <Route
                   path="/login"
                   element={<Login />}
-                  // element={currentUser ? <Navigate to="/" /> : <Login />}
+                  //  element={currentUser ? <Navigate to="/" /> : <Login />}
                 />
+                <Route path="/verify" element={<VerifyCode />} />
                 {/* <Route path="/verify" element={<VerifyCode />} />
               <Route path="/verify1" element={<VerifyCode1 />} />
               <Route path="/changepw" element={<ChangePW />} /> */}

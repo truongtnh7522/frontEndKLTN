@@ -8,14 +8,12 @@ import {
     signupSuccess,
     signupFailure,
   } from "./loginSlice";
- import { Toaster } from "react-hot-toast";
- import { successToast } from "../../../utils/getToast";
 
  export const login = async (dispatch: any, data: any): Promise<void> => {
   dispatch(loginStart());
   try {
     const res = await publicAxios.post(API.LOGIN, data);
-   
+ 
     dispatch(loginSuccess(res.data));
   } catch (err) {
     console.error(err);

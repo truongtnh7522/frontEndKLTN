@@ -11,6 +11,7 @@ const API = {
   POST_IMAGE: DOMAIN + "/api/post/upload",
   POST_CONTENT: DOMAIN + "/api/post",
   GET_INFO: DOMAIN + "/api/infor/user/:id",
+  GET_MY_INFO: DOMAIN + "/api/infor/myinfor",
   POST_INFO: DOMAIN + "/api/infor/create",
   UPDATE_INFO: DOMAIN + "/api/infor/update",
   POST_COMMENT: DOMAIN + "/api/cmt/create",
