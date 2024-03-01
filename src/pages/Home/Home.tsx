@@ -19,7 +19,6 @@ const Home = () => {
 
   useEffect(() => {
     const hasInfor = localStorage.getItem("hasInfor");
-    console.log(typeof hasInfor);
     if (hasInfor == "false") {
       // Kiểm tra nếu hasInfor không tồn tại hoặc có giá trị rỗng
       navigate("/add-info");
@@ -31,7 +30,7 @@ const Home = () => {
     setAuthToken(token);
     const fetchData = async () => {
       try {
-        const response = await api.get<ResponseData>(API.GET_MY_INFO);
+        const response = await api.get<ResponseData>(API.GET_ALL_POST);
         console.log(response);
       } catch (error) {
         console.error("Get post failed", error);
@@ -42,7 +41,11 @@ const Home = () => {
   }, []);
   return (
     <>
-      <div>ss</div>
+      <div className="flex flex-row">
+        <div className="w-[80vw]  h-[10000px] overflow-y-auto">69vw</div>
+        <div className="w-[20vw]  h-[100vh] fixed top-0 right-0">15vw</div>
+      </div>
+
       <Toaster />
     </>
   );

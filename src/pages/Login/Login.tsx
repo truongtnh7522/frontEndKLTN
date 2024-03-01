@@ -2,10 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilState, useRecoilValue } from "recoil";
-import ImgAv from "src/assets/login/avatar.svg";
-import ImgUn from "src/assets/login/unlock.svg";
-import ImgWa from "src/assets/login/wave.png";
-import Tilt from "react-parallax-tilt";
 // Import Recoil atom
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import { auth } from "src/firebase";
@@ -15,7 +11,8 @@ import { login, signup } from "../../redux/features/login/loginAPI";
 import { RootState } from "../../redux/store";
 import ImgA1 from "../../assets/login/img1.svg";
 import ImageMain from "../../assets/login/ImgMain.png";
-import { successToast } from "../../utils/getToast";
+import ImageMain1 from "../../assets/login/log.svg";
+import ImageMain2 from "../../assets/login/register.svg";
 import "./style.css";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -25,8 +22,7 @@ import {
   tokenState,
 } from "../../recoil/initState";
 import { FormProvider, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaLogin } from "../../schema/schemaLogin";
+
 import API from "../../services/API";
 const Login = () => {
   const history = useNavigate();
@@ -34,14 +30,17 @@ const Login = () => {
   const [emailRecoil, setEmailRecoil] = useRecoilState(Email);
   const [emailRegisRecoil, setEmailRegisRecoil] = useRecoilState(EmailRegis);
   const [passwordRecoil, setPasswordRecoil] = useRecoilState(Password);
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   // Register
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password1, setPassword] = useState("");
   const [comFirmPassword, setComFirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error1, setError] = useState(null);
   const [, setToken] = useRecoilState(tokenState);
   useEffect(() => {
     const user = localStorage.getItem("token");
@@ -111,10 +110,10 @@ const Login = () => {
       console.log(currentUser);
       setToken(currentUser?.data?.data?.jwtToken);
       localStorage.setItem("token", currentUser?.data?.data?.jwtToken);
+      localStorage.setItem("hasInfor", currentUser?.data?.data?.hasInfor);
       setTimeout(() => {
         toast.dismiss(); // Ẩn toast
         if (currentUser?.data?.data?.hasInfor == false) {
-          localStorage.setItem("hasInfor", currentUser?.data?.data?.hasInfor);
           navigate("/add-info");
         } else {
           navigate("/");
@@ -122,7 +121,6 @@ const Login = () => {
       }, 1000);
     }
     if (error == true && isFetching == false) {
-      console.log(123);
       setIsLoading(false);
       toast.error("Đăng nhập thất bại!");
     }
@@ -141,37 +139,12 @@ const Login = () => {
       console.error("Login failed", error);
     }
   };
-  // const handleRegis = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const data = {
-  //       email: email,
-  //       password: password1,
-  //     };
 
-  //     signup(dispatch, data);
-  //   } catch (error) {
-  //     console.error("Sign Up failed", error);
-  //   }
-  // };
   const [trans, setTrans] = useState(true);
   const [comFirmPass, setComFirmPass] = useState(true);
-  const methods = useForm({
-    mode: "onSubmit",
-    resolver: yupResolver(schemaLogin),
-  });
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = methods;
+
   return (
     <>
-      {/* <img
-        src={ImgA1}
-        className="fixed hidden lg:block inset-0 h-full zIndex-[-10] w-[50vw] bg-[rgb(16, 137, 211)]"
-      /> */}
       <div
         style={{
           backgroundImage: `url(${ImgA1})`,
@@ -188,7 +161,7 @@ const Login = () => {
       ></div>
       <div className="w-[auto] h-[100vh] flex flex-col justify-around items-center lg:grid lg:grid-cols-2">
         <div className="flex justify-center">
-          <img src={ImageMain} className="button w-[60%]" />
+          <img src={ImageMain1} className="button w-[60%]" />
         </div>
         <>
           {trans ? (

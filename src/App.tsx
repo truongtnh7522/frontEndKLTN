@@ -8,16 +8,25 @@ import {
 import "./App.css";
 import Login from "./pages/Login/Login";
 import { publicRoutes } from "./routes";
-import Logo2 from "../src/assets/Logo2.png";
+import Logo2 from "../src/assets/LogoLoad.png";
 import Logo from "../src/assets/LogoSN.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../src/redux/store";
 import VerifyCode from "./pages/VerifyCode/VerifyCode";
+import { fetchInfo } from "./redux/features/info/infoSlice";
+import AddInfo from "./pages/AddInfo/AddInfo";
 // import { Toaster } from "react-hot-toast";
 // import { successToast } from "./utils/getToast";
 function App() {
   const [loading, setLoading] = useState(true);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const { info, isLoading, isError, error } = useSelector(
+    (state: RootState) => state.info
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchInfo());
+  }, []);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false); // Kết thúc trạng thái loading
@@ -37,17 +46,16 @@ function App() {
             alignItems: "center",
           }}
         >
-          <img src={Logo} style={{ height: "100px", width: "100px" }} alt="" />
-          <img
-            src={Logo2}
+          <img src={Logo2} style={{ height: "300px", width: "300px" }} alt="" />
+
+          <div
+            className="loader2"
             style={{
               position: "absolute",
-              height: "150px",
-              width: "150px",
-              bottom: "20px",
+
+              bottom: "30px",
             }}
-            alt=""
-          />
+          ></div>
         </div>
       ) : (
         <>
@@ -60,13 +68,8 @@ function App() {
                   //  element={currentUser ? <Navigate to="/" /> : <Login />}
                 />
                 <Route path="/verify" element={<VerifyCode />} />
-                {/* <Route path="/verify" element={<VerifyCode />} />
-              <Route path="/verify1" element={<VerifyCode1 />} />
-              <Route path="/changepw" element={<ChangePW />} /> */}
-                {/* <Route path="/chat" element={<ChatBody />} /> */}
-                {/* <Route path="/info" } />
-              {/* <Route path="emulator/action" element={<PasswordReset />} /> 
-              <Route path="/fgpw" element={<ForgotPassword />} /> */}
+                <Route path="/add-info" element={<AddInfo />} />
+
                 {publicRoutes.map((publicRoute, index) => {
                   const Layout = publicRoute.layout;
 
@@ -92,10 +95,5 @@ function App() {
     </>
   );
 }
-{
-  /* <button onClick={successToast}>Show</button>
-        {/* <button onClick={errorToast}>Show Error Toast</button>
-        <button onClick={loadingToast}>Show Loading Toast</button> 
-        <Toaster /> */
-}
+
 export default App;

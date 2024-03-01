@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilState } from "recoil";
 import axios from "axios";
-
+import toast, { Toaster } from "react-hot-toast";
 import API from "../../services/API";
 // Import Recoil atom
 import { tokenState } from "../../recoil/initState";
@@ -71,13 +71,14 @@ const VerifyCode: FC<Props> = () => {
         email,
         pin,
       });
-      // const token = response.data.data.token;
-      console.log(response);
-      // Save token to localStorage
       if (response.data.data == "Xác thực thành công") {
-        navigate("/login");
+        toast.success("Xác thực thành công!");
+        setTimeout(() => {
+          toast.dismiss(); // Ẩn toast
+          navigate("/login");
+        });
       } else {
-        console.log("Sai");
+        toast.success("Xác thực thất bại!");
       }
     } catch (error) {
       console.error("Login failed", error);
@@ -110,6 +111,7 @@ const VerifyCode: FC<Props> = () => {
           </button>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

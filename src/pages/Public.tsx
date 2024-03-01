@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, memo, ReactNode } from "react";
-// import Header from "../components/Header/Header";
+import Header from "../components/Header/Header";
 import { useNavigate } from "react-router-dom";
 interface IProps {
   children: ReactNode;
@@ -16,11 +16,11 @@ const Public: React.FC<IProps> = ({ children }) => {
     <div
       className="flex h-[100%]"
       style={{
-        background: "white",
+        background: "#f0f2f5",
         display: "flex",
       }}
     >
-      {/* <Header /> */}
+      <Header />
       <>{children}</>
     </div>
   );

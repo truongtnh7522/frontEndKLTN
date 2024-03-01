@@ -19,7 +19,7 @@ body {
   /* font-family: 'Brown-pro', sans-serif !important; */
   /* font-family: 'Roboto', sans-serif; */
   /* font-family: 'Nunito Sans', sans-serif; */
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: "Inter", sans-serif !important; 
   overflow-y: scroll;
   height: 100vh;
   color: #000;
@@ -407,4 +407,10 @@ body {
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
   }
+}
+
+.emoji {
+  position: absolute;
+  top: 250px;
+  right: 50px;
 }

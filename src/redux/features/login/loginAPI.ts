@@ -13,7 +13,6 @@ import {
   dispatch(loginStart());
   try {
     const res = await publicAxios.post(API.LOGIN, data);
- 
     dispatch(loginSuccess(res.data));
   } catch (err) {
     console.error(err);

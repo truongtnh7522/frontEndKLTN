@@ -1,7 +1,7 @@
-import AddInfo from "../pages/AddInfo/AddInfo";
+
+import AddPost from "../pages/AddPost/AddPost";
 import Home from "../pages/Home/Home";
 import Public from "../pages/Public";
-import VerifyCode from "../pages/VerifyCode/VerifyCode";
 const publicRoutes = [
     {
       path: "/",
@@ -10,16 +10,10 @@ const publicRoutes = [
       sidebar: null,
     },
     {
-      path: "/add-info",
-      component: AddInfo,
+      path: "/add-post",
+      component: AddPost,
       layout: Public,
       sidebar: null,
     },
-    // {
-    //   path: "/verify",
-    //   component: VerifyCode,
-    //   layout: Public,
-    //   sidebar: null,
-    // },
 ]
 export { publicRoutes };

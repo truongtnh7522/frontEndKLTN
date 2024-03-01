@@ -1,7 +1,8 @@
 // apiService.js
 
 import axios from "axios";
-import API from "../services/requestMethods";
+import API from "../services/API";
+
 const api = axios.create({
   baseURL: API.LOGIN,
 });

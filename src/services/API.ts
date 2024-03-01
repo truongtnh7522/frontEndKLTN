@@ -1,4 +1,4 @@
-const DOMAIN = "https://truongnetwwork.bsite.net";
+const DOMAIN = "https://www.socialnetwork.somee.com";
 // Đây là file chứa API server
 const API = {
 
@@ -6,10 +6,11 @@ const API = {
   REGISTER: DOMAIN + "/api/auth/register",
   VERIFY_PIN: DOMAIN + "/api/auth/VerifyPin",
   RESEND_MAIL: DOMAIN + "/api/auth/ReSendMail",
+  ADD_INFO: DOMAIN + "/api/infor/create",
   GET_ALL_POST: DOMAIN + "/api/post",
   GET_ID_POST: DOMAIN + "/api/post/:id",
   POST_IMAGE: DOMAIN + "/api/post/upload",
-  POST_CONTENT: DOMAIN + "/api/post",
+  ADD_POST: DOMAIN + "/api/post",
   GET_INFO: DOMAIN + "/api/infor/user/:id",
   GET_MY_INFO: DOMAIN + "/api/infor/myinfor",
   POST_INFO: DOMAIN + "/api/infor/create",
