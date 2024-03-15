@@ -6,7 +6,7 @@ import { tokenState } from "../../recoil/initState";
 import { useRecoilValue } from "recoil";
 import { api, setAuthToken } from "../../utils/setAuthToken";
 import API from "../../services/API";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { BsEmojiSmile } from "react-icons/bs";
 import addPosts from "../../assets/add-post.svg";
@@ -17,6 +17,7 @@ import Dropzone from "react-dropzone";
 import Picker from "@emoji-mart/react";
 import { addInfo, addPost } from "../../redux/features/Add-Post/addPostAPI";
 import { useDropzone } from "react-dropzone";
+
 interface UploadedFile {
   file: File;
   preview: string;
@@ -47,7 +48,6 @@ const AddPost = () => {
   const [isImage, setIsImage] = useState(false);
   // const [File, setSelectedFile] = useState<File | null>(null);
   const [VideoFile, setVideoFile] = useState<File | null>(null);
-  console.log(uploadedFiles);
   const handleVoiceClick = () => {
     const recognition = new ((window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition)();
@@ -85,14 +85,33 @@ const AddPost = () => {
         formData.append("File", uploadedFiles[1]?.file);
       }
 
-      // if (File) {
-      //   formData.append("VideoFile", File); // Ensure the file name is provided
-      // }
       addPost(dispatch, formData);
     } catch (error) {
       console.error("Add sai!", error);
     }
   };
+  const error = useSelector((state) => state.addPost.error);
+  const dataAddPost = useSelector(
+    (state: RootState) => state.addPost.dataAddPost
+  );
+  const isFetching = useSelector(
+    (state: RootState) => state.addPost.isFetching
+  );
+  console.log(dataAddPost, error, isFetching);
+  useEffect(() => {
+    if (dataAddPost?.success === true) {
+      console.log(dataAddPost, error, isFetching);
+      setIsLoading(false);
+      toast.success("Thêm post thành công!");
+      setContent("");
+      setUploadedFiles([]);
+    }
+    if (error == true && isFetching == false) {
+      setIsLoading(false);
+      console.log(error);
+      toast.error("Thêm post thất bại!");
+    }
+  }, [dataAddPost, error, isFetching]);
   return (
     <>
       <div className="flex flex-row">
@@ -229,23 +248,29 @@ const AddPost = () => {
                 <span>Cancle</span>
               </button>
               <button className="buttonAddP ml-2" onClick={handlePost}>
-                <div className="svg-wrapper-1">
-                  <div className="svg-wrapper">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                    >
-                      <path fill="none" d="M0 0h24v24H0z"></path>
-                      <path
-                        fill="currentColor"
-                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-                      ></path>
-                    </svg>
+                {isLoading ? (
+                  <div className="loader"></div>
+                ) : (
+                  <div className="flex items-center">
+                    <div className="svg-wrapper-1">
+                      <div className="svg-wrapper">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          height="24"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path
+                            fill="currentColor"
+                            d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <span>Send</span>
                   </div>
-                </div>
-                <span>Send</span>
+                )}
               </button>
             </div>
           </div>
@@ -259,13 +284,7 @@ const AddPost = () => {
           <Picker onEmojiSelect={addEmoji} />
         </div>
       </div>
-      <Toaster />
     </>
   );
-};
-const previewStyle: React.CSSProperties = {
-  maxWidth: "100px",
-  maxHeight: "100px",
-  marginRight: "10px",
 };
 export default AddPost;

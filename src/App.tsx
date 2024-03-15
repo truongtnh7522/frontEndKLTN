@@ -15,6 +15,7 @@ import { RootState } from "../src/redux/store";
 import VerifyCode from "./pages/VerifyCode/VerifyCode";
 import { fetchInfo } from "./redux/features/info/infoSlice";
 import AddInfo from "./pages/AddInfo/AddInfo";
+import { Toaster } from "react-hot-toast";
 // import { Toaster } from "react-hot-toast";
 // import { successToast } from "./utils/getToast";
 function App() {
@@ -92,6 +93,7 @@ function App() {
           </Router>
         </>
       )}
+      <Toaster />
     </>
   );
 }

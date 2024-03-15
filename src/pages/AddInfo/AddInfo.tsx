@@ -116,31 +116,6 @@ const AddInfo = () => {
     }
   }, [dataAddInfo, error, isFetching]);
   return (
-    // <form
-    //   className="flex flex-col gap-4"
-    //   onSubmit={handleSubmit(onHandleFormSubmit)}
-    // >
-    //   <div className="flex gap-1 flex-col">
-    //     <label htmlFor="username">Username</label>
-    //     <input
-    //       id="username"
-    //       {...register("username")}
-    //       className="border h-11 px-4 rounded-md focus:outline-blue-500 "
-    //       required={true}
-    //     />
-    //     <input
-    //       id="username"
-    //       {...register("username1")}
-    //       className="border h-11 px-4 rounded-md focus:outline-blue-500 "
-    //       required={true}
-    //     />
-    //   </div>
-    //   <div className="flex justify-end">
-    //     <button className="h-11 px-6 inline-block bg-blue-600 font-semibold text-white rounded-md">
-    //       Next
-    //     </button>
-    //   </div>
-    // </form>
     <div className=" w-[100vw] bg-[#e2e8f0] h-[100vh] flex justify-center items-center">
       <div className=" h-[90%] w-[65%] flex ">
         <form className="flex flex-col bg-white  p-4 shadow-sm h-[100%] w-[70%] rounded-l-[10px]">
