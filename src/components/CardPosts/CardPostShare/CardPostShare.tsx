@@ -73,7 +73,7 @@ const CardPostShare = ({ data }: Props) => {
     try {
       const id = data.id;
       await api
-        .post(`https://truongnetwwork.bsite.net/api/like/${id}`)
+        .post(`https://www.socialnetwork.somee.com/api/like/${id}`)
         .then((response) => {
           // Cập nhật dữ liệu vào state
           console.log(response);
@@ -184,7 +184,7 @@ const CardPostShare = ({ data }: Props) => {
     const id = data.id;
     await api
       .get<ResponseData>(
-        `https://truongnetwwork.bsite.net/api/cmt/getcmtPost/${data.idShare}`
+        `https://www.socialnetwork.somee.com/api/cmt/getcmtPost/${data.idShare}`
       )
       .then((response) => {
         // Cập nhật dữ liệu vào state
@@ -203,7 +203,9 @@ const CardPostShare = ({ data }: Props) => {
     // const userId = id;
     const parentId = pId;
     return api
-      .post(`https://truongnetwwork.bsite.net/api/cmt/deleteOrUndo/${parentId}`)
+      .post(
+        `https://www.socialnetwork.somee.com/api/cmt/deleteOrUndo/${parentId}`
+      )
       .then((res) => {
         if (res.status === 200) {
           console.log(res);

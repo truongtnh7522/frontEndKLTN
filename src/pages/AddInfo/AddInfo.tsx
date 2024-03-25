@@ -154,7 +154,7 @@ const AddInfo = () => {
     // Gọi API để lấy dữ liệu
 
     await api
-      .get(`https://truongnetwwork.bsite.net/api/Provinces/getAllProvinces`)
+      .get(`https://www.socialnetwork.somee.com/api/Provinces/getAllProvinces`)
       .then((response) => {
         // Cập nhật dữ liệu vào state
         if (response.status === 200) {
@@ -171,7 +171,7 @@ const AddInfo = () => {
 
     await api
       .get(
-        `https://truongnetwwork.bsite.net/api/Provinces/getDistrictsByProvinceId/${selectedCity}`
+        `https://www.socialnetwork.somee.com/api/Provinces/getDistrictsByProvinceId/${selectedCity}`
       )
       .then((response) => {
         // Cập nhật dữ liệu vào state
@@ -193,7 +193,7 @@ const AddInfo = () => {
 
     await api
       .get(
-        `https://truongnetwwork.bsite.net/api/Provinces/getWardsByDistrictId/${selectedDistrict1}`
+        `https://www.socialnetwork.somee.com/api/Provinces/getWardsByDistrictId/${selectedDistrict1}`
       )
       .then((response) => {
         // Cập nhật dữ liệu vào state

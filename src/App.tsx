@@ -19,6 +19,7 @@ import { Toaster } from "react-hot-toast";
 import BadNotFound from "./components/BadNotFound/BadNotFound";
 import Chat from "./pages/Chat/Chat";
 import Register from "./pages/Register/Register";
+import Personal from "./pages/Personal/Personal";
 // import { Toaster } from "react-hot-toast";
 // import { successToast } from "./utils/getToast";
 function App() {
@@ -75,6 +76,7 @@ function App() {
                   //  element={currentUser ? <Navigate to="/" /> : <Login />}
                 />
                 <Route path="/verify" element={<VerifyCode />} />
+
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/add-info" element={<AddInfo />} />
                 <Route path="/bad-not-found" element={<BadNotFound />} />

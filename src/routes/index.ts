@@ -8,6 +8,7 @@ import Personal from "../pages/Personal/Personal";
 import Chat from "../pages/Chat/Chat";
 import PersonalFriend from "../pages/PersonalFriend/PersonalFriend";
 import ListFriend from "../pages/ListFriend/ListFriend";
+import Notifications from "../pages/Notifications/Notifications";
 const publicRoutes = [
     {
       path: "/",
@@ -51,11 +52,11 @@ const publicRoutes = [
       layout: Public,
       sidebar: null,
     },
-    // {
-    //   path: "/chat",
-    //   component: Chat,
-    //   layout: Public,
-    //   sidebar: null,
-    // },
+    {
+      path: "/notification",
+      component: Notifications,
+      layout: Public,
+      sidebar: null,
+    },
 ]
 export { publicRoutes };

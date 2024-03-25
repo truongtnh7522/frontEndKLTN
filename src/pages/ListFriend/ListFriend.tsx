@@ -34,7 +34,9 @@ const ListFriend = () => {
     // Gọi API để lấy dữ liệu
 
     await api
-      .get<ResponseData>(`https://truongnetwwork.bsite.net/api/Friend/getAll`)
+      .get<ResponseData>(
+        `https://www.socialnetwork.somee.com/api/Friend/getAll`
+      )
       .then((response) => {
         // Cập nhật dữ liệu vào state
         if (response.status === 200) {
@@ -54,7 +56,7 @@ const ListFriend = () => {
     try {
       const id = idfriend;
       const response = await api.post(
-        `https://truongnetwwork.bsite.net/api/Friend/send/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/send/${id}`
       );
       console.log(response);
       if (response.status == 200) {
@@ -71,7 +73,7 @@ const ListFriend = () => {
       const id = idfriend;
       console.log(1);
       const response = await api.post(
-        `https://truongnetwwork.bsite.net/api/Friend/accept/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/accept/${id}`
       );
       console.log(2);
       console.log(response);
@@ -88,7 +90,7 @@ const ListFriend = () => {
     try {
       const id = idfriend;
       const response = await api.post(
-        `https://truongnetwwork.bsite.net/api/Friend/refuseFriend/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/refuseFriend/${id}`
       );
       console.log(response);
       if (response.status == 200) {
@@ -103,7 +105,7 @@ const ListFriend = () => {
     setAuthToken(token);
     try {
       const response = await api.delete(
-        `https://truongnetwwork.bsite.net/api/Friend/unfriend/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/unfriend/${id}`
       );
       if (response.status == 200) {
         loadData();

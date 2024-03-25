@@ -67,7 +67,7 @@ const Header = () => {
         <ButtonHeader classNames="tab" to="/search">
           <CiSearch />
         </ButtonHeader>
-        <ButtonHeader classNames="tab" to="/list-friend">
+        <ButtonHeader classNames="tab" to="/notification">
           <CiHeart />
         </ButtonHeader>
         <ButtonHeader classNames="tab" to="/call-group">

@@ -1,4 +1,4 @@
-const DOMAIN = "https://truongnetwwork.bsite.net";
+const DOMAIN = "https://www.socialnetwork.somee.com";
 // Đây là file chứa API server
 const API = {
 

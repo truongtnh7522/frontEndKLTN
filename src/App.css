@@ -1047,7 +1047,12 @@ line {
 .BtnEdit:hover {
   color: transparent;
 }
-
+.topbar{
+  position: sticky;
+  top: 0px;
+  z-index: 49;
+  }
+  
 .BtnEdit:hover .svg {
   right: 43%;
   margin: 0;

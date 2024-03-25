@@ -29,7 +29,7 @@ const Search = () => {
 
     return api
       .get<ResponseData>(
-        `https://truongnetwwork.bsite.net/api/infor/searchuser`,
+        `https://www.socialnetwork.somee.com/api/infor/searchuser`,
         {
           params: { fullname: fullName }, // Use params to send data in the query string
         }
@@ -52,7 +52,7 @@ const Search = () => {
 
     return api
       .get<ResponseData>(
-        `https://truongnetwwork.bsite.net/api/infor/searchuser`,
+        `https://www.socialnetwork.somee.com/api/infor/searchuser`,
         {
           params: { fullname: fullName }, // Use params to send data in the query string
         }
@@ -72,7 +72,7 @@ const Search = () => {
     try {
       const id = idfriend;
       const response = await api.post(
-        `https://truongnetwwork.bsite.net/api/Friend/send/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/send/${id}`
       );
       console.log(response);
       if (response.status == 200) {
@@ -89,7 +89,7 @@ const Search = () => {
       const id = idfriend;
       console.log(1);
       const response = await api.post(
-        `https://truongnetwwork.bsite.net/api/Friend/accept/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/accept/${id}`
       );
       console.log(2);
       console.log(response);
@@ -106,7 +106,7 @@ const Search = () => {
     try {
       const id = idfriend;
       const response = await api.post(
-        `https://truongnetwwork.bsite.net/api/Friend/refuseFriend/${id}`
+        `https://www.socialnetwork.somee.com/api/Friend/refuseFriend/${id}`
       );
       console.log(response);
       if (response.status == 200) {
