@@ -14,9 +14,17 @@ import {
   CiVideoOn,
   CiLogout,
 } from "react-icons/ci";
+
+import { login } from "../../redux/features/login/loginAPI";
 import { GoHome } from "react-icons/go";
 import ButtonHeader from "../Button/ButtonHeader";
-
+import { IoLogOutOutline } from "react-icons/io5";
+import getInfo from "../../redux/features/info/getInfoAPI";
+import { Link } from "react-router-dom";
+import {
+  logoutSuccess,
+  setCurrentUser,
+} from "../../redux/features/login/loginSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,51 +32,64 @@ const Header = () => {
     (state: RootState) => state.info
   );
   useEffect(() => {
-    console.log(dispatch);
     dispatch(fetchInfo());
   }, []);
-
+  // useEffect(() => {
+  //   getInfo().then(({ data, error }) => {
+  //     if (error) {
+  //       navigate("/bad-not-found");
+  //     } else {
+  //       // Xử lý dữ liệu ở đây nếu cần
+  //       console.log(data);
+  //     }
+  //   });
+  // }, [navigate]);
   const handleLogout = () => {
-    localStorage.removeItem("hasInfor");
     localStorage.removeItem("token");
+    localStorage.removeItem("hasInfor");
+    // const data = {
+    //   email: "",
+    //   password: "",
+    // };
+    // console.log(data);
+    // login(dispatch, data);
+    console.log("Co vao lan 1");
+    dispatch(logoutSuccess());
     navigate("/login");
   };
+  console.log(info);
   return (
-    <div className="sticky top-[80px] h-[fit-content]">
+    <div className="sticky top-[80px] h-[100vh] ">
       <div className="navigation-card bg-[#ffffff] sticky top-[80px]">
         <ButtonHeader classNames="tab" to="/">
           <GoHome />
         </ButtonHeader>
-        <ButtonHeader classNames="tab" to="/s">
+        <ButtonHeader classNames="tab" to="/search">
           <CiSearch />
         </ButtonHeader>
-        <ButtonHeader classNames="tab" to="/s">
+        <ButtonHeader classNames="tab" to="/list-friend">
           <CiHeart />
         </ButtonHeader>
-        <ButtonHeader classNames="tab" to="/s">
+        <ButtonHeader classNames="tab" to="/call-group">
           <CiVideoOn />
         </ButtonHeader>
         <ButtonHeader classNames="tab" to="/s">
           <CiChat2 />
         </ButtonHeader>
-        <ButtonHeader classNames="tab" to="/s">
+        <ButtonHeader classNames="tab" to="/list-friend">
           <CiUser />
         </ButtonHeader>
         <ButtonHeader classNames="tab" to="/add-post">
           <CiSquarePlus />
         </ButtonHeader>
-        <img src={info?.data?.image || Logo2} alt="" className="tab-img" />
+        <button className="tab   " onClick={handleLogout}>
+          <IoLogOutOutline />
+        </button>
+        <Link to="/personal">
+          {" "}
+          <img src={info?.data?.image || Logo2} alt="" className="tab-img" />
+        </Link>
       </div>
-
-      <button className="Btn1 mt-2 ml-[50px]" onClick={handleLogout}>
-        <div className="sign1">
-          <CiLogout />
-        </div>
-
-        {/* <div className="text2" }>
-          Logout
-        </div> */}
-      </button>
     </div>
   );
 };

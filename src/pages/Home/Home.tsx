@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { fetchPost, reloadPost } from "../../redux/features/post/postSlice";
 import CardPosts from "../../components/CardPosts/CardPosts";
 import home from "../../assets/home.svg";
+import RightHome from "../../components/RightHome/RightHome";
+import { fetchFriend } from "../../redux/features/Not-Friend/friendSlice";
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,19 +28,21 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchPost());
+    dispatch(fetchFriend());
   }, [dispatch]);
   useEffect(() => {
-    console.log("sss");
     dispatch(reloadPost()); // Khi ReloadLike1 thay đổi, dispatch action reloadPost để fetch dữ liệu mới
   }, [ReloadLike1, dispatch]);
   const { post, isLoading, isError, error } = useSelector(
     (state: RootState) => state.post
   );
-  console.log(post);
+  const { friend, isLoadingfriend, isErrorfriend, errorfriend } = useSelector(
+    (state: RootState) => state.getFrined
+  );
   return (
     <>
       <div className="flex flex-row">
-        <div className="w-[80vw]  overflow-y-auto">
+        <div className="w-[70vw]  overflow-y-auto ">
           {/* */}
           <div className="flex justify-between pl-[150px] mt-6 ">
             <div className=" flex justify-start items-center">
@@ -61,7 +65,9 @@ const Home = () => {
             <CardPosts data={post} isLoading={isLoading} />
           </div>
         </div>
-        <div className="w-[20vw]   h-[100vh] fixed top-0 right-0">15vw</div>
+        <div className="w-[20vw]   h-[100vh] fixed top-0 right-0 px-4 border-l-[1px] border-solid border-white">
+          <RightHome data={friend} />
+        </div>
       </div>
 
       <Toaster />

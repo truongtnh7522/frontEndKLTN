@@ -1,4 +1,4 @@
-const DOMAIN = "https://www.socialnetwork.somee.com";
+const DOMAIN = "https://truongnetwwork.bsite.net";
 // Đây là file chứa API server
 const API = {
 
@@ -17,6 +17,7 @@ const API = {
   UPDATE_INFO: DOMAIN + "/api/infor/update",
   POST_COMMENT: DOMAIN + "/api/cmt/create",
   GET_ALL_FRIEND: DOMAIN + "/api/Friend/getAll",
+  GET_NOT_FRIEND: DOMAIN + "/api/Friend/getAllNotFriend"
   // POST_LIKE:DOMAIN + "api/like/{id}"
 };
 export default API;

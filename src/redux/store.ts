@@ -6,6 +6,8 @@ import addInfoSlice from "./features/Add-Info/addInfoSlice"
 import getInfoSlice from "./features/info/infoSlice"
 import addPostSlice from "./features/Add-Post/addPostSlice"
 import getPostSlice from "./features/post/postSlice"
+import addCmtSlice from "./features/Add-Cmt/addCmtSlice";
+import friendSlice from "./features/Not-Friend/friendSlice";
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -13,7 +15,9 @@ const store = configureStore({
     info:getInfoSlice,
     opition: opitionpostSlice,
     addPost:addPostSlice,
-    post:getPostSlice
+    post:getPostSlice,
+    addCmt:addCmtSlice,
+    getFrined: friendSlice
   },
 });
 

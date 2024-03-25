@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEarthAmericas } from "react-icons/fa6";
 import { FaUserFriends } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -7,26 +7,78 @@ import { api, setAuthToken } from "../../../utils/setAuthToken";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { fetchPost } from "../../../redux/features/post/postSlice";
 import { ReloadLike, tokenState } from "../../../recoil/initState";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { HiOutlineMicrophone } from "react-icons/hi2";
+import { BsEmojiSmile } from "react-icons/bs";
+import { IoIosSend } from "react-icons/io";
+import Picker from "@emoji-mart/react";
+import { addCmt } from "../../../redux/features/Add-Cmt/addCmtAPI";
+import { IoTrashBinOutline } from "react-icons/io5";
+import CustomVideo from "../../CustomVideo/CustomVideo";
+import { useNavigate } from "react-router-dom";
 interface Props {
   data: any;
 }
+interface ResponseData {
+  data: Comment[];
+  success: boolean;
+  message: string;
+}
 const CardPost = ({ data }: Props) => {
+  const navigate = useNavigate();
   const [images, setImages] = useState(data.images);
+  const [videos, setVideos] = useState(data.videos);
   const token = useRecoilValue(tokenState);
   const [like, setLike] = useRecoilState(ReloadLike);
+  const [toggleEmj, setToggleEmj] = useState(true);
+  const [Content, setContent] = useState("");
+  const [ContentChild, setContentChild] = useState("");
+  const [loadCmt1, setLoadCmt1] = useState(false);
+  const [loadCmt, setLoadCmt] = useState(false);
+  const [loadCmtChild, setLoadCmtChild] = useState(false);
+  const [toggleCmt, setToggleCmt] = useState("");
+  const [toggleLoad, setToggleLoad] = useState("");
+  const [emo, setEmo] = useState(true);
+  const [visibleComments, setVisibleComments] = useState(0);
   const [countData, setCountData] = useState(data.countLike);
+  const [dataCmt, setData] = useState<ResponseData>({
+    data: [],
+    success: false,
+    message: "",
+  });
+  const { info, isLoading, isError, error } = useSelector(
+    (state: RootState) => state.info
+  );
+  console.log(info, data);
+  const dataAddCmt = useSelector((state: RootState) => state.addCmt.dataAddCmt);
+  const handleSeeMore = () => {
+    setVisibleComments(visibleComments + 2);
+  };
+  const handleSeeLess = () => {
+    setVisibleComments(2);
+  };
+  useEffect(() => {
+    if (dataAddCmt?.data.success == true) {
+      // setLoadCmt1(false);
+      setLoadCmt(false);
+      setLoadCmtChild(false);
+      setContent("");
+      setContentChild("");
+      loadData();
+    }
+  }, [dataAddCmt]);
+  const [postId, setPostId] = useState(data.id);
   const dispatch = useDispatch();
   const handleLike = async () => {
     setAuthToken(token);
     try {
       const id = data.id;
-      console.log(123);
       await api
-        .post(`https://www.socialnetwork.somee.com/api/like/${id}`)
+        .post(`https://truongnetwwork.bsite.net/api/like/${id}`)
         .then((response) => {
           // Cập nhật dữ liệu vào state
-          console.log(response);
+
           if (response.status === 200) {
             dispatch(fetchPost());
             setLike(like + 1);
@@ -40,20 +92,152 @@ const CardPost = ({ data }: Props) => {
       console.error("Login failed", error);
     }
   };
-  console.log(data);
+  const handleVoiceClick = () => {
+    const recognition = new ((window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition)();
+    recognition.interimResults = true;
+
+    recognition.addEventListener("result", (e: any) => {
+      const transcript = Array.from(e.results)
+        .map((result: any) => result[0])
+        .map((result) => result.transcript)
+        .join("");
+      setContent(Content + transcript);
+    });
+
+    recognition.start();
+  };
+  const handleVoiceClickChild = () => {
+    const recognition = new ((window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition)();
+    recognition.interimResults = true;
+
+    recognition.addEventListener("result", (e: any) => {
+      const transcript = Array.from(e.results)
+        .map((result: any) => result[0])
+        .map((result) => result.transcript)
+        .join("");
+      setContentChild(ContentChild + transcript);
+    });
+
+    recognition.start();
+  };
+  const addEmoji = (e: any) => {
+    const sym = e.unified.split("-");
+    const codesArray = [];
+    sym.forEach((el: any) => codesArray.push("0x" + el));
+    const emoji = String.fromCodePoint(...codesArray);
+    setContent(Content + emoji);
+  };
+  const addEmojiChild = (e: any) => {
+    const sym = e.unified.split("-");
+    const codesArray = [];
+    sym.forEach((el: any) => codesArray.push("0x" + el));
+    const emoji = String.fromCodePoint(...codesArray);
+    setContentChild(ContentChild + emoji);
+  };
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+  const handleFocus = () => {
+    setEmo(true);
+    setIsInputFocused(true);
+  };
+  const handleFocusChild = () => {
+    setEmo(false);
+    // setIsInputFocused(true);
+  };
+  const handleBlur = () => {
+    setToggleEmj(!toggleEmj);
+  };
+
+  const handleAddPostBig = async () => {
+    setLoadCmt(true);
+    try {
+      // const data =;
+
+      addCmt(dispatch, {
+        Content: Content,
+        postId: postId,
+        userId: info.data.userId,
+      });
+    } catch (error) {
+      console.error("Add sai!", error);
+    }
+  };
+  const handleAddPostSmall = async (pId: string) => {
+    setLoadCmtChild(true);
+    setToggleLoad(pId);
+    try {
+      // const data =;
+
+      addCmt(dispatch, {
+        Content: ContentChild,
+        postId: postId,
+        userId: info.data.userId,
+        parentId: pId,
+      });
+    } catch (error) {
+      console.error("Add sai!", error);
+    }
+  };
+  const loadData = async () => {
+    // Gọi API để lấy dữ liệu
+    const id = data.id;
+    await api
+      .get<ResponseData>(
+        `https://truongnetwwork.bsite.net/api/cmt/getcmtPost/${id}`
+      )
+      .then((response) => {
+        // Cập nhật dữ liệu vào state
+        if (response.status === 200) {
+          setLoadCmt1(true);
+          setData(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+  const hanldDltCmtChild = async (pId: string) => {
+    setAuthToken(token);
+    // const postId = idPost;
+    // const userId = id;
+    const parentId = pId;
+    return api
+      .post(`https://truongnetwwork.bsite.net/api/cmt/deleteOrUndo/${parentId}`)
+      .then((res) => {
+        if (res.status === 200) {
+          loadData();
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    loadData();
+    // loadDataUserCmt();
+  }, []);
+
   return (
-    <div className="w-[500px] h-auto bg-white  mb-10 rounded-[10px]">
+    <div
+      className="w-[500px] h-auto bg-white  mb-10 rounded-[10px]"
+      style={{ position: "relative" }}
+    >
       <div className="py-4 px-4 flex justify-between items-center">
         <div className="flex items-center">
           <img
             src={data.avatarUrl}
             alt="avatar"
             className="h-[45px] w-[45px] rounded-[50%]"
+            onClick={() => {
+              info.data.userId == data.userId
+                ? navigate("/personal")
+                : navigate(`/personal-user/${data.userId}`);
+            }}
           />
           <div className=" ml-4 text-left">
             <span className="text-[18px] font-[500] ">{data.fullName}</span>
-            <div className="flex justify-center items-center">
-              <span className="text-light-3 text-[12px] mr-2">2 hours</span>
+            <div className="flex justify-start items-center ">
+              <span className="text-light-3 text-[12px] mr-2 ">2 hours</span>
               <>
                 {data.levelView == 1 ? (
                   <div className="text-light-3 ">
@@ -104,15 +288,49 @@ const CardPost = ({ data }: Props) => {
                   />
                 ))}
               </div>
-            ) : (
-              <>
+            ) : images.length === 1 && videos.length === 1 ? (
+              <div className="flex flex-col">
                 {images?.map((index, item) => (
                   <img
                     key={index}
                     src={images[item]?.linkImage}
                     alt=""
-                    className="w-[100%]"
+                    className=" w-[100%]"
                   />
+                ))}
+                {videos?.map((index, item) => (
+                  <div className="mt-2 p-3">
+                    {" "}
+                    <div className=" border-[5px] border-[#456fe6] border-solid">
+                      <CustomVideo src={videos[item]?.link} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : images.length === 1 ? (
+              <div className="flex">
+                {images?.map((index, item) => (
+                  <img
+                    key={index}
+                    src={images[item]?.linkImage}
+                    alt=""
+                    className=" w-[100%]"
+                  />
+                ))}
+              </div>
+            ) : (
+              <>
+                {videos?.map((index, item) => (
+                  <div className="">
+                    <CustomVideo src={videos[item]?.link} />
+                  </div>
+                  // <video
+                  //   key={index}
+
+                  //   controls
+                  //   preload="auto"
+                  //   className="w-[100%]"
+                  // ></video>
                 ))}
               </>
             )}
@@ -153,6 +371,231 @@ const CardPost = ({ data }: Props) => {
             </div>{" "}
             Share
           </button>
+        </div>
+      </div>
+      <div className="px-6 py-2">
+        <div className="flex justify-start items-top">
+          <img
+            src={info.data.image || ""}
+            alt="avatar"
+            className="h-[35px] w-[35px] rounded-[50%]"
+          />
+          <div style={{ position: "relative", width: "100%" }}>
+            <textarea
+              placeholder="Your comment .... "
+              name="text"
+              onChange={(e) => setContent(e.target.value)}
+              value={Content}
+              className={`${isInputFocused ? "inputCmt1" : "inputCmt"}`}
+              onFocus={handleFocus}
+            ></textarea>
+            <div className={`${isInputFocused ? "iconCmt1" : "iconCmt"}`}>
+              {" "}
+              <div
+                onClick={() => setToggleEmj(!toggleEmj)}
+                onBlur={handleBlur}
+                className="cursor-pointer mr-1 bg-white p-2 rounded-[50%] hover:bg-[#456fe6] hover:text-white duration-500"
+              >
+                {" "}
+                <BsEmojiSmile />
+              </div>
+              <div
+                className="cursor-pointer mr-1 bg-white p-2 rounded-[50%] hover:bg-[#456fe6] hover:text-white duration-500"
+                onClick={handleVoiceClick}
+              >
+                <HiOutlineMicrophone />{" "}
+              </div>
+              <div
+                className="cursor-pointer mr-1 bg-white p-2 rounded-[50%] hover:bg-[#456fe6] hover:text-white duration-500"
+                onClick={handleAddPostBig}
+              >
+                <IoIosSend />{" "}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        {loadCmt1 == false ? (
+          <div className="flex justify-center items-center">
+            {" "}
+            <div className="loaderCmt1 "></div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div>
+        {loadCmt == true ? (
+          <div className="flex justify-center items-center">
+            {" "}
+            <div className="loaderCmt1 "></div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+
+      <div className="px-6 py-2">
+        <div className="mb-2">
+          <>
+            {dataCmt.data.map((item: Comment, index: number) => (
+              <>
+                <div className="flex justify-start items-top mb-1" key={index}>
+                  <img
+                    src={item.image}
+                    alt="avatar"
+                    className="h-[30px] w-[30px] rounded-[50%]"
+                  />
+                  <div className="flex flex-col text-left ml-3 bg-[#f0f2f5] p-2 rounded-xl">
+                    <span className="text-[12px] font-bold">
+                      {item.fullName}
+                    </span>
+                    <span className="text-[12px]"> {item.content}</span>
+                  </div>
+                </div>
+                <div className="flex px-12 cursor-pointer">
+                  <span
+                    className="text-[10px]"
+                    onClick={() => setToggleCmt(item.id)}
+                  >
+                    Trả lời
+                  </span>
+                  <span
+                    className="text-[10px] ml-2"
+                    onClick={() => hanldDltCmtChild(item.id)}
+                  >
+                    Xóa
+                  </span>
+                </div>
+                <>
+                  {loadCmtChild == true ? (
+                    <>
+                      {item.id == toggleLoad ? (
+                        <div className="flex justify-center items-center">
+                          {" "}
+                          <div className="loaderCmt1 "></div>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </>
+
+                {item.childrenComment
+                  .slice(0, visibleComments)
+                  .map((childComment: any, index1: any) => (
+                    <div className="flex justify-start items-top px-6 mt-2 mb-2">
+                      <img
+                        src={childComment.image}
+                        alt="avatar"
+                        className="h-[30px] w-[30px] rounded-[50%]"
+                      />
+                      <div className="flex justify-center items-center">
+                        <div className="flex flex-col text-left ml-3 bg-[#f0f2f5] p-2 rounded-xl">
+                          <span className="text-[12px] font-bold">
+                            {childComment.fullName}
+                          </span>
+                          <span className="text-[12px]">
+                            {childComment.content + ""}
+                          </span>
+                        </div>
+                        <span
+                          onClick={() => hanldDltCmtChild(childComment.id)}
+                          className="text-[10px] ml-2 cursor-pointer hover:bg-[#456fe6] hover:text-white p-2 rounded-[50%]"
+                        >
+                          <IoTrashBinOutline />
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                <>
+                  {item.childrenComment.length > visibleComments && (
+                    <div
+                      className="text-[12px] text-black cursor-pointer"
+                      onClick={handleSeeMore}
+                    >
+                      Xem thêm
+                    </div>
+                  )}
+                  {item.childrenComment.length < visibleComments &&
+                    visibleComments > 2 && (
+                      <div
+                        className="text-[12px] text-black cursor-pointer"
+                        onClick={handleSeeLess}
+                      >
+                        Ẩn đi
+                      </div>
+                    )}
+                </>
+                {toggleCmt == item.id ? (
+                  <div className="px-10 py-2">
+                    <div className="flex justify-start items-top">
+                      <img
+                        src={info.data.image}
+                        alt="avatar"
+                        className="h-[30px] w-[30px] rounded-[50%]"
+                      />
+                      <div
+                        style={{ position: "relative", width: "90%" }}
+                        className="ml-3"
+                      >
+                        <textarea
+                          placeholder="Your comment .... "
+                          name="text"
+                          onChange={(e) => setContentChild(e.target.value)}
+                          value={ContentChild}
+                          className="inputCmtCh"
+                          onFocus={handleFocusChild}
+                        ></textarea>
+                        <div className="iconCmtCh">
+                          {" "}
+                          <div
+                            onClick={() => setToggleEmj(!toggleEmj)}
+                            onBlur={handleBlur}
+                            className="cursor-pointer mr-1 bg-white p-2 rounded-[50%] hover:bg-[#456fe6] hover:text-white duration-500"
+                          >
+                            {" "}
+                            <BsEmojiSmile />
+                          </div>
+                          <div
+                            className="cursor-pointer mr-1 bg-white p-2 rounded-[50%] hover:bg-[#456fe6] hover:text-white duration-500"
+                            onClick={handleVoiceClickChild}
+                          >
+                            <HiOutlineMicrophone />{" "}
+                          </div>
+                          <div
+                            className="cursor-pointer mr-1 bg-white p-2 rounded-[50%] hover:bg-[#456fe6] hover:text-white duration-500"
+                            onClick={() => handleAddPostSmall(item.id)}
+                          >
+                            <IoIosSend />{" "}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            ))}
+          </>
+        </div>
+      </div>
+      <div
+        className="w-full"
+        style={{
+          display: toggleEmj ? "none" : "block",
+          position: "fixed",
+          right: 0,
+          top: 0,
+        }}
+      >
+        <div className="emoji">
+          <Picker onEmojiSelect={emo == true ? addEmoji : addEmojiChild} />
         </div>
       </div>
     </div>

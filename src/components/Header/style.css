@@ -49,17 +49,17 @@
   .Btn1 {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     width: 45px;
     height: 45px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    position: relative;
+    
     overflow: hidden;
     transition-duration: .3s;
-   
-    background-color: white;
+    color: black;
+    background-color: rgb(252, 252, 252);
   }
   
   /* plus sign */

@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import scrollbar from 'tailwind-scrollbar';
 export default {
   mode: "jit",
   content: [
@@ -29,6 +30,7 @@ export default {
         'xs': '480px',
       
       },
+      
       width: {
         '420': '420px',
         '465': '465px',
@@ -53,5 +55,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [scrollbar],
 };

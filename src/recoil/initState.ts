@@ -47,6 +47,10 @@ export const ReloadLike = atom({
   key: "ReloadLike",
   default: 0,
 });
+export const CallGroupR = atom({
+  key: "CallGroupR",
+  default: "vg2sd",
+});
 // export const newinitState = selector({
 //   key: "newInitState",
 //   get: ({ get }) => {

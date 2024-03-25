@@ -16,7 +16,6 @@ const initialState: InfoState = {
 // async thunk
 export const fetchInfo = createAsyncThunk("info/fetchInfo", async () => {
   const info = await getInfo();
-  console.log(info)
   return info;
 });
 
@@ -43,5 +42,4 @@ const infoSlice = createSlice({
       });
   },
 });
-console.log(infoSlice)
 export default infoSlice.reducer;

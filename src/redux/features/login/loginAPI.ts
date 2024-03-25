@@ -12,7 +12,9 @@ import {
  export const login = async (dispatch: any, data: any): Promise<void> => {
   dispatch(loginStart());
   try {
+    console.log("Co vào", data)
     const res = await publicAxios.post(API.LOGIN, data);
+    console.log(res.data)
     dispatch(loginSuccess(res.data));
   } catch (err) {
     console.error(err);

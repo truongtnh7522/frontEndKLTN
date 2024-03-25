@@ -78,9 +78,8 @@ const AddPost = () => {
       const formData = new FormData();
       formData.append("Content", Content);
       formData.append("LevelVieW", isChecked);
-      console.log(uploadedFiles);
+
       if (uploadedFiles) {
-        console.log("Img: ", formData.append("File", File));
         formData.append("File", uploadedFiles[0]?.file);
         formData.append("File", uploadedFiles[1]?.file);
       }
@@ -97,10 +96,8 @@ const AddPost = () => {
   const isFetching = useSelector(
     (state: RootState) => state.addPost.isFetching
   );
-  console.log(dataAddPost, error, isFetching);
   useEffect(() => {
     if (dataAddPost?.success === true) {
-      console.log(dataAddPost, error, isFetching);
       setIsLoading(false);
       toast.success("Thêm post thành công!");
       setContent("");
@@ -139,8 +136,8 @@ const AddPost = () => {
                     <input
                       type="radio"
                       name="radio"
-                      onChange={() => setIsChecked("0")}
-                      checked={isChecked === "0"}
+                      onChange={() => setIsChecked("1")}
+                      checked={isChecked === "1"}
                     />
                     <span className="name">Công khai</span>
                   </label>
@@ -148,8 +145,8 @@ const AddPost = () => {
                     <input
                       type="radio"
                       name="radio"
-                      onChange={() => setIsChecked("1")}
-                      checked={isChecked === "1"}
+                      onChange={() => setIsChecked("2")}
+                      checked={isChecked === "2"}
                     />
                     <span className="name">Bạn bè</span>
                   </label>

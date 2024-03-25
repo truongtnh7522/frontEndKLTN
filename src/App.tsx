@@ -16,14 +16,15 @@ import VerifyCode from "./pages/VerifyCode/VerifyCode";
 import { fetchInfo } from "./redux/features/info/infoSlice";
 import AddInfo from "./pages/AddInfo/AddInfo";
 import { Toaster } from "react-hot-toast";
+import BadNotFound from "./components/BadNotFound/BadNotFound";
+import Chat from "./pages/Chat/Chat";
+import Register from "./pages/Register/Register";
 // import { Toaster } from "react-hot-toast";
 // import { successToast } from "./utils/getToast";
 function App() {
   const [loading, setLoading] = useState(true);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-  const { info, isLoading, isError, error } = useSelector(
-    (state: RootState) => state.info
-  );
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchInfo());
@@ -68,8 +69,15 @@ function App() {
                   element={<Login />}
                   //  element={currentUser ? <Navigate to="/" /> : <Login />}
                 />
+                <Route
+                  path="/register"
+                  element={<Register />}
+                  //  element={currentUser ? <Navigate to="/" /> : <Login />}
+                />
                 <Route path="/verify" element={<VerifyCode />} />
+                <Route path="/chat" element={<Chat />} />
                 <Route path="/add-info" element={<AddInfo />} />
+                <Route path="/bad-not-found" element={<BadNotFound />} />
 
                 {publicRoutes.map((publicRoute, index) => {
                   const Layout = publicRoute.layout;

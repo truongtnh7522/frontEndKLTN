@@ -10,6 +10,8 @@ import { addInfo } from "../../redux/features/Add-Info/addInfoAPI";
 import { useNavigate } from "react-router";
 import { RootState } from "../../redux/store";
 import toast, { Toaster } from "react-hot-toast";
+import { api } from "../../utils/setAuthToken";
+
 const AddInfo = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -21,10 +23,15 @@ const AddInfo = () => {
   }, []);
   const [isLoading, setIsLoading] = useState(false);
   const [FullName, setFullName] = useState("");
+  const [NickName, setNickName] = useState("");
+  const [Career, setCareer] = useState("");
   const [WorkPlace, setWorkPlace] = useState("");
   const [DateOfBirth, setDateOfBirth] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [File, setSelectedFile] = useState<File | null>(null);
+  const [FileBackground, setSelectedFileBackground] = useState<File | null>(
+    null
+  );
   const [Gender, setGender] = useState(false);
   const [value, setValue] = useState(false);
   const [Address, setAddress] = useState("");
@@ -45,6 +52,10 @@ const AddInfo = () => {
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+  };
+  const handleFileChangeBg = (event: any) => {
+    const file = event.target.files[0];
+    setSelectedFileBackground(file);
   };
   const base64UrlDecode = (base64Url: any) => {
     const base64 = base64Url.replace("-", "+").replace("_", "/");
@@ -73,17 +84,29 @@ const AddInfo = () => {
         // Tạo formData để chứa dữ liệu và file
         const File1 = new FormData();
         File1.append("File", File);
-        const data = {
-          UserId: UserId,
-          FullName: FullName,
-          WorkPlace: WorkPlace,
-          Gender: Gender,
-          PhoneNumber: PhoneNumber,
-          File: File,
-          Address: Address,
-          DateOfBirth: DateOfBirth,
-        };
-        addInfo(dispatch, data);
+        if (FileBackground) {
+          const File2 = new FormData();
+          File2.append("File", FileBackground);
+          const data = {
+            UserId: UserId,
+            FullName: FullName,
+            WorkPlace: WorkPlace,
+            Gender: Gender,
+
+            PhoneNumber: PhoneNumber,
+            File: File,
+            Direction: Address,
+            DateOfBirth: DateOfBirth,
+            Wards: nameWa,
+            Districts: nameDi,
+            Provinces: nameCi,
+            FileBackground: FileBackground,
+            Career: Career,
+            Nickname: NickName,
+          };
+          console.log(data);
+          addInfo(dispatch, data);
+        }
       }
     } catch (error) {
       console.error("Add sai!", error);
@@ -115,21 +138,100 @@ const AddInfo = () => {
       toast.error("Thêm thông tin thất bại!");
     }
   }, [dataAddInfo, error, isFetching]);
+  const [dataProvide, setDataProvide] = useState([]);
+  const [dataDistrict, setDataDistrict] = useState([]);
+  const [dataWard, setDataWard] = useState([]);
+
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedDistrict1, setSelectedDistrict1] = useState("01");
+  const [selectedWard, setSelectedWard] = useState("01");
+
+  const [nameCi, setNameCi] = useState("");
+  const [nameDi, setNameDi] = useState("");
+  const [nameWa, setNameWa] = useState("");
+  console.log(selectedDistrict1);
+  const loadDataProvide = async () => {
+    // Gọi API để lấy dữ liệu
+
+    await api
+      .get(`https://truongnetwwork.bsite.net/api/Provinces/getAllProvinces`)
+      .then((response) => {
+        // Cập nhật dữ liệu vào state
+        if (response.status === 200) {
+          console.log(response.data.data[0]);
+          setDataProvide(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+  const loadDataDistrict = async () => {
+    // Gọi API để lấy dữ liệu
+
+    await api
+      .get(
+        `https://truongnetwwork.bsite.net/api/Provinces/getDistrictsByProvinceId/${selectedCity}`
+      )
+      .then((response) => {
+        // Cập nhật dữ liệu vào state
+        if (response.status === 200) {
+          console.log(response.data);
+          setDataDistrict(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+  useEffect(() => {
+    loadDataDistrict();
+    // loadDataUserCmt();
+  }, [selectedCity]);
+  const loadDataWard = async () => {
+    // Gọi API để lấy dữ liệu
+
+    await api
+      .get(
+        `https://truongnetwwork.bsite.net/api/Provinces/getWardsByDistrictId/${selectedDistrict1}`
+      )
+      .then((response) => {
+        // Cập nhật dữ liệu vào state
+        if (response.status === 200) {
+          console.log(response.data);
+          setDataWard(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+  useEffect(() => {
+    console.log(123);
+    loadDataWard();
+  }, [selectedDistrict1]);
+  useEffect(() => {
+    loadDataProvide();
+    // loadDataUserCmt();
+  }, []);
   return (
-    <div className=" w-[100vw] bg-[#e2e8f0] h-[100vh] flex justify-center items-center">
+    <div
+      className=" w-[auto] bg-[#e2e8f0] h-[100vh] flex justify-center items-center"
+      style={{ overflow: "hidden" }}
+    >
       <div className=" h-[90%] w-[65%] flex ">
         <form className="flex flex-col bg-white  p-4 shadow-sm h-[100%] w-[70%] rounded-l-[10px]">
           <h2 className="text-[#56fe6] font-bold text-[30px]">
             Add Information
           </h2>
-          <div className="w-full  py-1 mt-3 flex px-[20px] justify-start items-center">
+          <div className="w-full  py-1 mt-1   flex px-[20px] justify-start items-center">
             <p className="border-[1px] border-solid border-[#6eb7ed] py-[5px] px-[12px] mr-2 rounded-full font-bold text-[#6eb7ed]">
               1
             </p>
             <p className="text-black font-bold">Personal Information</p>
           </div>
-          <div className="mt-4 flex justify-around">
-            <div>
+          <div className="mt-1 flex justify-around ">
+            <div className="w-[30%]">
               <label className="text-gray-600 text-sm">Name</label>
               <input
                 placeholder="Your name"
@@ -138,7 +240,16 @@ const AddInfo = () => {
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
-            <div>
+            <div className="w-[30%]">
+              <label className="text-gray-600 text-sm">Nick name</label>
+              <input
+                placeholder="Your Nickname"
+                className="w-full  rounded-md border-[#cdcdcd] border-solid border-[1px]  outline-[#6eb7ed] px-2 py-1"
+                type="text"
+                onChange={(e) => setNickName(e.target.value)}
+              />
+            </div>
+            <div className="w-[30%]">
               <label className="text-gray-600 text-sm">WorkPlace</label>
               <input
                 placeholder="Your WorkPlace"
@@ -148,8 +259,8 @@ const AddInfo = () => {
               />
             </div>
           </div>
-          <div className="mt-4 flex justify-around">
-            <div className=" max-w-[350px]">
+          <div className="mt-1 flex justify-around">
+            <div className="w-[30%]">
               <label htmlFor="buttondisplay" className="text-gray-600 text-sm">
                 Date
               </label>
@@ -159,36 +270,38 @@ const AddInfo = () => {
                 className="w-full pl-[4.5rem] pr-6  rounded-md border-[#cdcdcd] border-solid border-[1px]  outline-[#6eb7ed] px-2 py-1"
               />
             </div>
-            <div className="bg-white  rounded-lg max-w-[350px]">
+            <div className="w-[30%]">
+              <label className="text-gray-600 text-sm">Career</label>
+              <input
+                placeholder="Your Career"
+                className="w-full  rounded-md border-[#cdcdcd] border-solid border-[1px]  outline-[#6eb7ed] px-2 py-1"
+                type="text"
+                onChange={(e) => setCareer(e.target.value)}
+              />
+            </div>
+            <div className="bg-white  rounded-lg w-[30%]">
               <label className="text-gray-600 text-sm">Phone number</label>
               <div className="relative max-w-xs text-gray-500">
-                <div className="absolute inset-y-0 left-3 my-auto h-6 flex items-center border-r pr-2 ">
-                  <select className="text-sm outline-none rounded-lg h-full">
-                    <option>US</option>
-                    <option>ES</option>
-                    <option>MR</option>
-                  </select>
-                </div>
                 <input
                   type="number"
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   min={0}
                   placeholder="+1 (555) 000-000"
-                  className="w-full pl-[4rem] pr-3 py-1 appearance-none bg-transparent outline-none border focus:border-[#6eb7ed] shadow-sm rounded-md "
+                  className="w-full pl-[1em] pr-3 py-1 appearance-none bg-transparent outline-none border focus:border-[#6eb7ed] shadow-sm rounded-md "
                 />
               </div>
             </div>
           </div>
-          <div className="flex">
+          <div className="flex justify-between pr-5">
             <div className="">
-              <div className="w-full  py-1 mt-6 flex px-[20px] justify-start items-center">
+              <div className="w-full  py-1 mt-3 flex px-[20px] justify-start items-center">
                 <p className="border-[1px] border-solid border-[#6eb7ed] py-[5px] px-[12px] mr-2 rounded-full font-bold text-[#6eb7ed]">
                   2
                 </p>
                 <p className="text-black font-bold">Avatar User</p>
               </div>
 
-              <form className="file-upload-form mt-2 pl-6">
+              <form className="file-upload-form mt-1 pl-6">
                 <label for="file" className="file-upload-label">
                   <div className="file-upload-design">
                     <div className="loader1"></div>
@@ -197,17 +310,38 @@ const AddInfo = () => {
                 </label>
               </form>
             </div>
-            <div className="ml-[160px]">
-              <div className="w-full  py-1 mt-6 flex px-[20px] justify-start items-center">
+            <div className="">
+              <div className="w-full  py-1 mt-3 flex px-[20px] justify-start items-center">
                 <p className="border-[1px] border-solid border-[#6eb7ed] py-[5px] px-[12px] mr-2 rounded-full font-bold text-[#6eb7ed]">
                   3
+                </p>
+                <p className="text-black font-bold">Background User</p>
+              </div>
+
+              <form className="file-upload-form mt-1 pl-6">
+                <label for="filebg" className="file-upload-label">
+                  <div className="file-upload-design">
+                    <div className="loader1"></div>
+                  </div>
+                  <input
+                    id="filebg"
+                    type="file"
+                    onChange={handleFileChangeBg}
+                  />
+                </label>
+              </form>
+            </div>
+            <div className="">
+              <div className="w-full  py-1 mt-3 flex px-[20px] justify-start items-center">
+                <p className="border-[1px] border-solid border-[#6eb7ed] py-[5px] px-[12px] mr-2 rounded-full font-bold text-[#6eb7ed]">
+                  4
                 </p>
                 <p className="text-black font-bold">Gender</p>
               </div>
 
               <Space
                 direction="horizontal"
-                className="my-4 w-[100%] flex justify-around mt-8 ml-[20px]"
+                className="my-4 w-[100%] flex justify-around mt-6 ml-[20px]"
               >
                 <Radio.Group
                   onChange={onChangeR}
@@ -220,16 +354,89 @@ const AddInfo = () => {
               </Space>
             </div>
           </div>
-          <div className="w-full  py-1 mt-4 flex px-[20px] justify-start items-center">
+          <div className="w-full  py-1  flex px-[20px] justify-start items-center">
             <p className="border-[1px] border-solid border-[#6eb7ed] py-[5px] px-[12px] mr-2 rounded-full font-bold text-[#6eb7ed]">
-              4
+              5
             </p>
             <p className="text-black font-bold">Address Information</p>
           </div>
           <div>
+            <div className=" w-[100%] flex justify-center items-center mt-3">
+              <form className="max-w-[200px] mx-auto">
+                <select
+                  id="countries"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    setSelectedCity(e.target.value);
+                    const selectedIndex = e.target.selectedIndex;
+                    if (selectedIndex !== -1) {
+                      const selectedOption = e.target.options[selectedIndex];
+                      const fullName = selectedOption.text;
+                      setNameCi(fullName);
+                    }
+                    // setCity(e.target.options[e.target.selectedIndex].text);
+                  }}
+                  value={selectedCity}
+                >
+                  <option selected>Choose a provides</option>
+                  {dataProvide?.data?.map((item: any, index: any) => (
+                    <option value={dataProvide.data[index]?.code} key={index}>
+                      {dataProvide.data[index]?.fullName}
+                    </option>
+                  ))}
+                </select>
+              </form>
+              <form className="max-w-[200px] mx-auto">
+                <select
+                  id="countries"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    setSelectedDistrict1(e.target.value);
+                    const selectedIndex = e.target.selectedIndex;
+                    if (selectedIndex !== -1) {
+                      const selectedOption = e.target.options[selectedIndex];
+                      const fullName = selectedOption.text;
+                      setNameDi(fullName);
+                    }
+                  }}
+                  value={selectedDistrict1}
+                >
+                  <option selected>Choose a district</option>
+                  {dataDistrict?.data?.map((item: any, index: any) => (
+                    <option value={dataDistrict.data[index]?.code} key={index}>
+                      {dataDistrict.data[index]?.fullName}
+                    </option>
+                  ))}
+                </select>
+              </form>
+              <form className="max-w-[200px] mx-auto">
+                <select
+                  id="countries"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    setSelectedWard(e.target.value);
+                    const selectedIndex = e.target.selectedIndex;
+                    if (selectedIndex !== -1) {
+                      const selectedOption = e.target.options[selectedIndex];
+                      const fullName = selectedOption.text;
+                      setNameWa(fullName);
+                    }
+                    // setCity(e.target.options[e.target.selectedIndex].text);
+                  }}
+                  value={selectedWard}
+                >
+                  <option selected>Choose a district</option>
+                  {dataWard?.data?.map((item: any, index: any) => (
+                    <option value={dataWard.data[index]?.code} key={index}>
+                      {dataWard.data[index]?.fullName}
+                    </option>
+                  ))}
+                </select>
+              </form>
+            </div>
             <textarea
               placeholder="Your address"
-              className="w-[90%] mt-2 rounded-md border-[#cdcdcd] border-solid border-[1px] outline-[#6eb7ed] px-6 py-1"
+              className="w-[90%] mt-4 rounded-md border-[#cdcdcd] border-solid border-[1px] outline-[#6eb7ed] px-6 py-1"
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>

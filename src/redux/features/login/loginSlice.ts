@@ -57,3 +57,7 @@ export const {
   signupFailure,
 } = userSlice.actions;
 export default userSlice.reducer;
+export const setCurrentUser = (user:any) => ({
+  type: 'user/setCurrentUser',
+  payload: user,
+});

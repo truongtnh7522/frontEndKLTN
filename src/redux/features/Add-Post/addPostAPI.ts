@@ -20,7 +20,7 @@ import { api, setAuthToken } from "../../../utils/setAuthToken";
       },
     });
     dispatch(addPostSuccess(res.data));
-    console.log(res.data)
+   
   } catch (err) {
     console.error(err);
     dispatch(addPostFailure());

@@ -7,11 +7,15 @@ interface IProps {
 const Public: React.FC<IProps> = ({ children }) => {
   const history = useNavigate();
   // const { setUser } = ChatState();
-  useEffect(() => {
-    const user = localStorage.getItem("token");
 
-    if (!user) history("/login");
-  }, [history]);
+  useEffect(() => {
+    const hasInfor = localStorage.getItem("hasInfor");
+    if (hasInfor == "false") {
+      // Kiểm tra nếu hasInfor không tồn tại hoặc có giá trị rỗng
+      history("/add-info");
+    }
+  }, []);
+
   return (
     <div
       className="flex h-[100%]"
