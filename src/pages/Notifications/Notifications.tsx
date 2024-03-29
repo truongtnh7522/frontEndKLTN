@@ -4,6 +4,17 @@ import { tokenState } from "../../recoil/initState";
 import { useRecoilValue } from "recoil";
 import { api } from "../../utils/setAuthToken";
 import { Empty } from "antd";
+interface Comment {
+  content: string;
+  images: { linkImage: string; createDate: string }[]; // Đặt kiểu cho mảng images
+  linkImage?: string;
+  createDate: string;
+  userTo: string;
+  id: string;
+  userNotify: any;
+  islike: boolean;
+  videos: { link: string; createDate: string }[]; //
+}
 interface ResponseData {
   data: Comment[];
   success: boolean;
@@ -28,7 +39,7 @@ const Notifications = () => {
 
     await api
       .get<ResponseData>(
-        `https://www.socialnetwork.somee.com/api/Notify/getPostNotifies`
+        `https://www.socialnetwork.somee.com/api/Notify/getNotifies`
       )
       .then((response) => {
         // Cập nhật dữ liệu vào state
@@ -120,17 +131,9 @@ const Notifications = () => {
                           />
                           <div className="ml-2 text-sm flex-auto">
                             <a href="#" className="font-bold hover:text-blue">
-                              Mark Webber
+                              {item.content}
                             </a>
-                            <span className="text-darkgb">
-                              reacted to your recent post
-                            </span>
-                            <a
-                              href="#"
-                              className="font-bold text-darkgb cursor-pointer hover:text-blue"
-                            >
-                              My first tournament today!
-                            </a>
+
                             <span id="notification-ping">
                               <span className="absolute inline-block rounded-full mt-2 ml-1 p-1 bg-red">
                                 {" "}

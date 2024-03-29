@@ -179,7 +179,7 @@ const Personal = () => {
             </div>
 
             <div className="w-full md:w-1/4 p-4 text-center">
-              <div className="w-full relative md:w-3/4 text-center mt-8">
+              <div className="w-full relative text-center mt-8">
                 <button
                   className="flex rounded-full"
                   id="user-menu"

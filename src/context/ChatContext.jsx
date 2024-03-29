@@ -1,10 +1,11 @@
 import { createContext, useContext, useReducer } from "react";
-import { AuthContext } from "./AuthContext";
 
+import { useSelector } from "react-redux";
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
-  const { currentUser } = useContext(AuthContext);
+  const currentUser = useSelector((state) => state.info.info);
+  console.log(currentUser)
   const INITIAL_STATE = {
     chatId: "null",
     user: {},
@@ -16,9 +17,9 @@ export const ChatContextProvider = ({ children }) => {
         return {
           user: action.payload,
           chatId:
-            currentUser.uid > action.payload.uid
-              ? currentUser.uid + action.payload.uid
-              : action.payload.uid + currentUser.uid,
+          currentUser.data.firebaseData.uid > action.payload.uid
+              ? currentUser.data.firebaseData.uid + action.payload.uid
+              : action.payload.uid + currentUser.data.firebaseData.uid,
         };
 
       default:
