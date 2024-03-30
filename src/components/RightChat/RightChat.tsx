@@ -23,10 +23,27 @@ const RightChat = () => {
     return ""; // hoặc giá trị mặc định khác tùy thuộc vào trường hợp của bạn
   }
   useEffect(() => {
+    const fetchData = async () => {
+      setAuthToken(token);
+      try {
+        const fullName = data.user?.displayName;
+        const responseInfo = await api.get(
+          "https://www.socialnetwork.somee.com/api/infor/searchuser",
+          {
+            params: { fullname: fullName },
+          }
+        );
+        console.log(responseInfo.data.data?.[0].userId);
+        setName(responseInfo.data.data?.[0]?.userId.slice(0, 10));
+        setUserName(responseInfo.data.data?.[0]?.fullName);
+      } catch (error) {
+        console.error("Get post failed", error);
+      }
+    };
     const fetchData1 = async () => {
       setAuthToken(token);
-      setUserName(data.user.displayName);
-      setName(updateUserName(data.user.uid));
+      // setUserName(data.user.displayName);
+      // setName(updateUserName(data.user.uid));
       try {
         const responseInfo = await api.get(
           "https://www.socialnetwork.somee.com/api/infor/myinfor"
@@ -40,6 +57,7 @@ const RightChat = () => {
     };
 
     const initChat = async () => {
+      await fetchData();
       await fetchData1();
       await init();
     };
@@ -81,9 +99,9 @@ const RightChat = () => {
   }
 
   const handleSend = (callType: any) => {
-    const callee = name;
+    const callee = username + "_" + name;
     const usercallee = username;
-    console.log(name, username);
+    console.log(callee, name2);
     if (!callee) {
       alert("userID cannot be empty!!");
       return;

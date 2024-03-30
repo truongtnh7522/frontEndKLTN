@@ -314,7 +314,7 @@ const Message = ({ message }: Props) => {
   }, [message]);
 
   return (
-    <div className="chat-body p-4 flex-1 overflow-y-scroll">
+    <div className="chat-body py-4 flex-1">
       {/** Đoạn này là user chat*/}
       <div
         className={`flex flex-row justify-start ${

@@ -18,7 +18,7 @@ const BodyRightChat = () => {
     };
   }, [data.chatId]);
   return (
-    <div className="chat-body p-4 flex-1 overflow-y-scroll">
+    <div className=" p-4 flex-1 overflow-y-scroll">
       {messages.map((m, index) => (
         <Message message={m} key={index} />
       ))}
