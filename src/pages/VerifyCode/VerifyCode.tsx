@@ -73,10 +73,8 @@ const VerifyCode: FC<Props> = () => {
       });
       if (response.data.data == "Xác thực thành công") {
         toast.success("Xác thực thành công!");
-        setTimeout(() => {
-          toast.dismiss(); // Ẩn toast
-          navigate("/login");
-        });
+        // Ẩn toast
+        navigate("/login");
       } else {
         toast.success("Xác thực thất bại!");
       }
@@ -106,7 +104,11 @@ const VerifyCode: FC<Props> = () => {
               />
             ))}
           </form>
-          <button id="verify-btn" onClick={handlePin}>
+          <button
+            id="verify-btn"
+            className="cursor-pointer"
+            onClick={handlePin}
+          >
             Xác nhận OTP
           </button>
         </div>
