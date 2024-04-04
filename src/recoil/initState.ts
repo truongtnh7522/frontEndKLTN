@@ -51,6 +51,10 @@ export const CallGroupR = atom({
   key: "CallGroupR",
   default: "vg2sd",
 });
+export const SearChChat = atom({
+  key: "SearChChat",
+  default: "false",
+});
 // export const newinitState = selector({
 //   key: "newInitState",
 //   get: ({ get }) => {

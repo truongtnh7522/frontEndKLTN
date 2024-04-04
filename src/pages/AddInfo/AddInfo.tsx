@@ -425,7 +425,9 @@ const AddInfo = () => {
                   }}
                   value={selectedWard}
                 >
-                  <option selected>Choose a district</option>
+                  <option selected className="w-[200px]">
+                    Choose a district
+                  </option>
                   {dataWard?.data?.map((item: any, index: any) => (
                     <option value={dataWard.data[index]?.code} key={index}>
                       {dataWard.data[index]?.fullName}

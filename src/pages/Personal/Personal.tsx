@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { CiMap } from "react-icons/ci";
 import CustomVideo from "../../components/CustomVideo/CustomVideo";
-
+import { fetchInfo } from "../../redux/features/info/infoSlice";
+import Logo2 from "../../assets/LogoLoad.png";
 // import { Skeleton } from "react-loading-skeleton";
 
 interface Comment {
@@ -38,9 +39,15 @@ const Personal = () => {
     success: false,
     message: "",
   });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchInfo());
+  }, []);
   const { info, isLoading, isError, error } = useSelector(
     (state: RootState) => state.info
   );
+  console.log(info);
+
   const loadDataFriend = async () => {
     // Gọi API để lấy dữ liệu
 
@@ -82,7 +89,6 @@ const Personal = () => {
   useEffect(() => {
     loadDataFriend();
   }, []);
-  console.log(info.data.userId);
   return (
     <>
       <div className="insta-clone">
@@ -96,7 +102,7 @@ const Personal = () => {
                   <Skeleton className="h-[20px] w-[80px] mr-2" />
                 ) : (
                   <span className="text-base text-gray-700 text-2xl mr-2">
-                    {info.data.nickname}
+                    {info.data.nickname || "User"}
                   </span>
                 )}
 
@@ -152,7 +158,7 @@ const Personal = () => {
                   <Skeleton className="h-[15px] w-[50px] " />
                 ) : (
                   <span className="text-lg font-bold text-gray-700 mr-2">
-                    {info.data.fullName}
+                    {info.data.fullName || "User"}
                   </span>
                 )}
               </div>
@@ -162,7 +168,7 @@ const Personal = () => {
                   <Skeleton className="h-[15px] w-[90px] " />
                 ) : (
                   <p className="text-base font-medium text-blue-700 mr-2">
-                    #{info.data.career}
+                    #{info.data.career || "User"}
                   </p>
                 )}
                 {loadData == false ? (
@@ -171,7 +177,7 @@ const Personal = () => {
                   <div className="flex items-center">
                     <CiMap />
                     <p className="text-base font-medium text-gray-700 mr-2 ml-2">
-                      {info.data.address}
+                      {info.data.address || "User"}
                     </p>
                   </div>
                 )}
@@ -191,7 +197,7 @@ const Personal = () => {
                   ) : (
                     <img
                       className="h-40 w-40 rounded-full"
-                      src={info.data.image || ""}
+                      src={info.data.image || Logo2}
                       alt="avatart"
                     />
                   )}

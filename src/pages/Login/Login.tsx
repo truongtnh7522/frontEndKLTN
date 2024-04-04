@@ -17,42 +17,21 @@ import {
 } from "../../recoil/initState";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import API from "../../services/API";
-import InputText from "../../components/common/input-text/InputText";
-import { typeTextInput } from "../../components/common/input-text/helper";
+import { login } from "../../redux/features/login/loginAPI";
+
 const Login = () => {
   const history = useNavigate();
   // const [signIn, toggle] = React.useState(true);
   const [emailRecoil, setEmailRecoil] = useRecoilState(Email);
   const [emailRegisRecoil, setEmailRegisRecoil] = useRecoilState(EmailRegis);
   const [passwordRecoil, setPasswordRecoil] = useRecoilState(Password);
-  const [email, setEmail] = useState("");
-  const [password1, setPassword] = useState("");
-  const methods = useForm({
-    mode: "onSubmit",
-    resolver: yupResolver(schemaLogin),
-  });
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = methods;
-  const onSubmit = () => {
-    const data = {
-      identifier: getValues().email,
-      password: getValues().password,
-    };
 
-    console.log(data);
-  };
-  const onError = () => {
-    toast.error("Đăng nhập thất bại!");
-  };
-  console.log(errors);
   // Register
   const navigate = useNavigate();
-
+  const [email, setEmail] = useState("");
+  const [password1, setPassword] = useState("");
   const [comFirmPassword, setComFirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [, setToken] = useRecoilState(tokenState);
@@ -139,23 +118,22 @@ const Login = () => {
   }, [currentUser, error, isFetching]);
 
   const handleLogin = async () => {
-    // setIsLoading(true);
-    // console.log(email, password1);
-    // try {
-    //   const data = {
-    //     email: email,
-    //     password: password1,
-    //   };
-    //   login(dispatch, data);
-    // } catch (error) {
-    //   console.error("Login failed", error);
-    // }
+    setIsLoading(true);
+    console.log(email, password1);
+    try {
+      const data = {
+        email: email,
+        password: password1,
+      };
+
+      login(dispatch, data);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
-  console.log(control);
+
   const [trans, setTrans] = useState(true);
   const [comFirmPass, setComFirmPass] = useState(true);
-  const [valiLogin, setValiLogin] = useState(true);
-  const [valiLoginNameError, setValiLoginNameError] = useState("");
 
   return (
     <>
@@ -182,80 +160,48 @@ const Login = () => {
             <>
               <div className="container1">
                 <div className="heading">Sign In</div>
-                <div className="form">
-                  <FormProvider {...methods}>
-                    {/* <input
-                      className="input"
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="E-mail"
-                      onChange={(e) => setEmail(e.target.value)}
-                    /> */}
-                    <InputText
-                      label={"Tài khoản Gmail"}
-                      name={"Email"}
-                      control={control}
-                      placeholder="aimini@example.com"
-                      errorMessage={errors["Email"]?.message}
-                      required
-                    />
-                    <InputText
-                      label={"Mật khẩu"}
-                      name={"Mật khẩu"}
-                      inputType={typeTextInput.password}
-                      control={control}
-                      placeholder={"Mật khẩu"}
-                      errorMessage={errors["Mật khẩu"]?.message}
-                      required
-                    />
-                    {/* <input
-                      className="input"
-                      type="password"
-                      name="password"
-                      id="password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Password"
-                    /> */}
-                    <div className="flex  justify-between">
-                      <span className="forgot-password">
-                        <a href="#">Don't have account ?</a>{" "}
-                        <span
-                          onClick={() => setTrans(false)}
-                          className="underline text-[#11a6d1]"
-                        >
-                          Sign Up
-                        </span>
-                      </span>
+                <div action="" className="form">
+                  <input
+                    className="input"
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="E-mail"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <input
+                    className="input"
+                    type="password"
+                    name="password"
+                    id="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                  />
+                  <div className="flex  justify-between">
+                    <span className="forgot-password">
+                      <a href="#">Don't have account ?</a>{" "}
                       <span
-                        className="forgot-password"
-                        onClick={() => navigate("/fgpw")}
+                        onClick={() => setTrans(false)}
+                        className="underline text-[#11a6d1]"
                       >
-                        <p>Forgot Password ?</p>
+                        Sign Up
                       </span>
-                    </div>
-                    <button
-                      className="login-button flex justify-center"
-                      type="submit"
-                      onClick={handleSubmit(() => onSubmit(), onError)}
-                      // onClick={handleLogin}
-                      // disabled={isFetching}
+                    </span>
+                    <span
+                      className="forgot-password"
+                      onClick={() => navigate("/fgpw")}
                     >
-                      {isLoading ? <div className="loader"></div> : "Sign in"}
-                    </button>
-                  </FormProvider>
+                      <p>Forgot Password ?</p>
+                    </span>
+                  </div>
+                  <div
+                    className="login-button flex justify-center"
+                    onClick={handleLogin}
+                    // disabled={isFetching}
+                  >
+                    {isLoading ? <div className="loader"></div> : "Sign in"}
+                  </div>
                 </div>
-                {/* <>
-                  {valiLogin == false ? (
-                    <div className="flex  justify-between">
-                      <span className="forgot-password">
-                        <span className="text-red">{valiLoginNameError}</span>
-                      </span>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                </> */}
                 <div className="social-account-container">
                   <span className="title">Or Sign in with</span>
                   <div className="social-accounts">
@@ -329,7 +275,10 @@ const Login = () => {
                   {comFirmPass == false ? (
                     <div className="flex  justify-between">
                       <span className="forgot-password">
-                        <span className="text-red">
+                        <span
+                          onClick={() => setTrans(true)}
+                          className="text-red"
+                        >
                           (*) Mật khẩu không trùng nhau
                         </span>
                       </span>

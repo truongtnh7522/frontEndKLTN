@@ -12,7 +12,10 @@
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
+    "@mui/material": "^5.15.14",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^2.2.1",
     "@types/jsonwebtoken": "^9.0.5",

@@ -47,13 +47,6 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("hasInfor");
-    // const data = {
-    //   email: "",
-    //   password: "",
-    // };
-    // console.log(data);
-    // login(dispatch, data);
-    console.log("Co vao lan 1");
     dispatch(logoutSuccess());
     navigate("/login");
   };

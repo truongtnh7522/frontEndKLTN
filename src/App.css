@@ -1280,7 +1280,9 @@ line {
   position: absolute;
   transition: var(--burger-line-transition);
 }
-
+.x5n08af {
+  color: #141414;
+}
 .burger span:nth-child(1) {
   top: var(--burger-offset);
 }

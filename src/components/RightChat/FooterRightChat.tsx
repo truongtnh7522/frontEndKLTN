@@ -107,7 +107,11 @@ const FooterRightChat = () => {
     const file = event.target.files[0];
     setImg(file);
   };
-
+  const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      handleSend();
+    }
+  };
   return (
     <div className="chat-footer flex-none">
       <div className="flex flex-row items-center p-4">
@@ -152,11 +156,12 @@ const FooterRightChat = () => {
         <div className="relative flex-grow">
           <label>
             <input
-              className="input-message rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
+              className="input-message rounded-full py-2 pl-3 pr-10 w-full border border-[#dbdbdb]  focus:outline-none text-black  transition duration-300 ease-in"
               type="text"
               value={text}
               placeholder="Aa"
               onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKey}
             />
             <button
               type="button"
@@ -169,13 +174,13 @@ const FooterRightChat = () => {
             </button>
           </label>
         </div>
-        <button
+        {/* <button
           type="button"
           onClick={handleSend}
-          className="flex  focus:outline-none mx-2  text-blue-600 hover:text-blue-700 w-6 h-6 justify-center items-center"
+          className="flex focus:outline-none mx-2  text-blue-600 hover:text-blue-700 w-6 h-6 justify-center items-center"
         >
           <IoSendSharp />
-        </button>
+        </button> */}
       </div>
       <div
         className="w-full h-[100px] absolute bottom-[600px] right-16"
