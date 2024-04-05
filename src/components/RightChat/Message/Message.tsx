@@ -26,13 +26,13 @@ const Message = ({ message }: Props) => {
         }`}
       >
         <div className="w-8 h-8 relative flex flex-shrink-0 mr-4">
-          {/* <img
+          <img
             className={`shadow-md rounded-full w-full h-full object-cover ${
               message.senderId === currentUser.data.firebaseData.uid && "hidden"
             }`}
             src={data.user.photoURL}
             alt=""
-          /> */}
+          />
         </div>
         <div className="messages text-sm text-gray-700 grid grid-flow-row gap-2">
           <>

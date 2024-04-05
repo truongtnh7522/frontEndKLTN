@@ -71,7 +71,88 @@ const RightChat = () => {
     }
   }, [name, name2]);
   ///
+  const removeVietnameseDiacritics = (str: string) => {
+    const diacriticsMap = {
+      á: "a",
+      à: "a",
+      ả: "a",
+      ã: "a",
+      ạ: "a",
+      ă: "a",
+      ắ: "a",
+      ằ: "a",
+      ẳ: "a",
+      ẵ: "a",
+      ặ: "a",
+      â: "a",
+      ấ: "a",
+      ầ: "a",
+      ẩ: "a",
+      ẫ: "a",
+      ậ: "a",
+      đ: "d",
+      é: "e",
+      è: "e",
+      ẻ: "e",
+      ẽ: "e",
+      ẹ: "e",
+      ê: "e",
+      ế: "e",
+      ề: "e",
+      ể: "e",
+      ễ: "e",
+      ệ: "e",
+      í: "i",
+      ì: "i",
+      ỉ: "i",
+      ĩ: "i",
+      ị: "i",
+      ó: "o",
+      ò: "o",
+      ỏ: "o",
+      õ: "o",
+      ọ: "o",
+      ô: "o",
+      ố: "o",
+      ồ: "o",
+      ổ: "o",
+      ỗ: "o",
+      ộ: "o",
+      ơ: "o",
+      ớ: "o",
+      ờ: "o",
+      ở: "o",
+      ỡ: "o",
+      ợ: "o",
+      ú: "u",
+      ù: "u",
+      ủ: "u",
+      ũ: "u",
+      ụ: "u",
+      ư: "u",
+      ứ: "u",
+      ừ: "u",
+      ử: "u",
+      ữ: "u",
+      ự: "u",
+      ý: "y",
+      ỳ: "y",
+      ỷ: "y",
+      ỹ: "y",
+      ỵ: "y",
+    };
 
+    return str.replace(/[^A-Za-z0-9]/g, (char) => diacriticsMap[char] || char);
+  };
+  const removeSpaces = (str: string) => {
+    return str.replace(/\s+/g, "");
+  };
+  const getLastNCharacters = (str: string, n: number) => {
+    if (n >= str.length) {
+      return str;
+    }
+    return str.slice(-n);
+  };
   // const [calleeId, setCalleeId] = useState(name);
   const zeroCloudInstance = useRef<ZegoUIKitPrebuilt | null>(null);
   async function init() {
@@ -100,9 +181,15 @@ const RightChat = () => {
   }
 
   const handleSend = (callType: any) => {
-    const callee = username + "_" + name;
-    const usercallee = username;
-    console.log(callee, name2);
+    const callee =
+      removeSpaces(removeVietnameseDiacritics(username)).slice(3, 8) +
+      "_" +
+      name;
+    const usercallee = removeSpaces(removeVietnameseDiacritics(username)).slice(
+      3,
+      8
+    );
+    console.log(callee, usercallee);
     if (!callee) {
       alert("userID cannot be empty!!");
       return;
