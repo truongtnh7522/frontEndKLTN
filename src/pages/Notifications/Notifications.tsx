@@ -8,6 +8,7 @@ interface Comment {
   content: string;
   images: { linkImage: string; createDate: string }[]; // Đặt kiểu cho mảng images
   linkImage?: string;
+  image: string;
   createDate: string;
   userTo: string;
   id: string;
@@ -125,25 +126,27 @@ const Notifications = () => {
                           className="mt-3 bg-verylightgb rounded-md flex justify-between p-3 "
                         >
                           <img
-                            src="./assets/images/avatar-mark-webber.webp"
+                            src={item.image}
                             alt="notification user avatar"
-                            className="w-12 h-12 "
+                            className="w-12 h-12 rounded-full"
                           />
                           <div className="ml-2 text-sm flex-auto">
                             <a href="#" className="font-bold hover:text-blue">
                               {item.content}
                             </a>
 
-                            <span id="notification-ping">
-                              <span className="absolute inline-block rounded-full mt-2 ml-1 p-1 bg-red">
-                                {" "}
-                              </span>
-                              <span className="relative inline-block animate-ping rounded-full ml-1 p-1 bg-red">
-                                {" "}
-                              </span>
-                            </span>
-                            <p className="text-gb mt-1">1m ago</p>
+                            <p className="text-gb mt-1 text-left text-[#fff]">
+                              1m ago
+                            </p>
                           </div>
+                          <span id="notification-ping" className="ml-2">
+                            <span className="absolute inline-block rounded-full mt-2 ml-1 p-1 bg-red">
+                              {" "}
+                            </span>
+                            <span className="relative inline-block animate-ping rounded-full ml-1 p-1 bg-red">
+                              {" "}
+                            </span>
+                          </span>
                         </div>
                       ))}
                     </>

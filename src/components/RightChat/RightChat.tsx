@@ -156,12 +156,12 @@ const RightChat = () => {
   // const [calleeId, setCalleeId] = useState(name);
   const zeroCloudInstance = useRef<ZegoUIKitPrebuilt | null>(null);
   async function init() {
-    const userId = username2 + "_" + name2;
-    const userName = username2;
+    const userId = name2;
+    const userName = removeSpaces(removeVietnameseDiacritics(username2));
 
     const appID = 2006450489; // fill your appID here
     const serverSecret = "86689832e7ca0c38051798682eac4a50"; // fill your serverSecret here
-    console.log(appID, serverSecret, userId, userName);
+    console.log(userId, userName);
     const KitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
@@ -182,13 +182,10 @@ const RightChat = () => {
 
   const handleSend = (callType: any) => {
     const callee =
-      removeSpaces(removeVietnameseDiacritics(username)).slice(3, 8) +
+      removeSpaces(removeVietnameseDiacritics(username)).slice(1, 5) +
       "_" +
       name;
-    const usercallee = removeSpaces(removeVietnameseDiacritics(username)).slice(
-      3,
-      8
-    );
+    const usercallee = removeSpaces(removeVietnameseDiacritics(username));
     console.log(callee, usercallee);
     if (!callee) {
       alert("userID cannot be empty!!");
@@ -225,7 +222,7 @@ const RightChat = () => {
 
   return (
     <>
-      <section className="flex flex-col flex-auto border-l ">
+      <section className="flex flex-col flex-auto border-l  ">
         <div className="chat-header px-6 py-4 flex flex-row flex-none justify-between items-center border-b-[1px]">
           <div className="flex justify-center items-center">
             <div className="w-12 h-12 mr-4 relative flex justify-center items-center">
